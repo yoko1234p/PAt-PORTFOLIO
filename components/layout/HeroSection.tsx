@@ -100,7 +100,7 @@ export const HeroSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk
             <Button
               variant="primary"
               onClick={() =>
-                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
               }
             >
               {content.ctaPrimary}

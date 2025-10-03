@@ -13,45 +13,10 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
-  const baseStyles =
-    'px-8 py-3 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2';
-
-  if (variant === 'primary') {
-    return (
-      <button
-        className={`${baseStyles} relative overflow-hidden group ${className}`}
-        {...props}
-      >
-        {/* Glass background layer */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-accent-primary to-accent-secondary transition-all duration-300"
-          style={{
-            backdropFilter: 'saturate(180%) blur(20px)',
-            WebkitBackdropFilter: 'saturate(180%) blur(20px)',
-          }}
-        />
-
-        {/* Glass shine effect */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{
-            background:
-              'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(255,255,255,0.2) 100%)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-          }}
-        />
-
-        {/* Content */}
-        <span className="relative z-10 text-white drop-shadow-sm">{children}</span>
-      </button>
-    );
-  }
-
   if (variant === 'ghost') {
     return (
       <button
-        className={`${baseStyles} border-2 border-accent-primary/20 text-accent-primary hover:border-accent-primary hover:bg-accent-primary/5 ${className}`}
+        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 border-2 border-accent-primary/20 text-accent-primary hover:border-accent-primary hover:bg-accent-primary/5 ${className}`}
         {...props}
       >
         {children}
@@ -59,13 +24,287 @@ export const Button: React.FC<ButtonProps> = ({
     );
   }
 
-  // secondary variant
+  if (variant === 'secondary') {
+    return (
+      <button
+        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 text-accent-primary bg-white/80 backdrop-blur-sm border border-accent-primary/20 hover:bg-white hover:border-accent-primary hover:shadow-lg hover:scale-105 ${className}`}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  // Primary variant - 完全跟足 CodePen
   return (
-    <button
-      className={`${baseStyles} text-accent-primary bg-white/80 backdrop-blur-sm border border-accent-primary/20 hover:bg-white hover:border-accent-primary hover:shadow-lg hover:scale-105 ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
+    <div className="button-wrap">
+      <button className={`glass-button ${className}`} {...props}>
+        <span>{children}</span>
+      </button>
+      <div className="button-shadow"></div>
+
+      <style jsx>{`
+        @property --angle-1 {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: -75deg;
+        }
+
+        @property --angle-2 {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: -45deg;
+        }
+
+        .button-wrap {
+          --anim--hover-time: 400ms;
+          --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+          position: relative;
+          z-index: 2;
+          border-radius: 999vw;
+          background: transparent;
+          pointer-events: none;
+          transition: all var(--anim--hover-time) var(--anim--hover-ease);
+          display: inline-block;
+        }
+
+        .button-shadow {
+          --shadow-cuttoff-fix: 2em;
+          position: absolute;
+          width: calc(100% + var(--shadow-cuttoff-fix));
+          height: calc(100% + var(--shadow-cuttoff-fix));
+          top: calc(0% - var(--shadow-cuttoff-fix) / 2);
+          left: calc(0% - var(--shadow-cuttoff-fix) / 2);
+          filter: blur(clamp(2px, 0.125em, 12px));
+          -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+          -moz-filter: blur(clamp(2px, 0.125em, 12px));
+          -ms-filter: blur(clamp(2px, 0.125em, 12px));
+          overflow: visible;
+          pointer-events: none;
+        }
+
+        .button-shadow::after {
+          content: '';
+          position: absolute;
+          z-index: 0;
+          inset: 0;
+          border-radius: 999vw;
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+          width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+          height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+          top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+          left: calc(var(--shadow-cuttoff-fix) - 0.875em);
+          padding: 0.125em;
+          box-sizing: border-box;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          -webkit-mask-composite: xor;
+          transition: all var(--anim--hover-time) var(--anim--hover-ease);
+          overflow: visible;
+          opacity: 1;
+        }
+
+        .glass-button {
+          --border-width: clamp(1px, 0.0625em, 4px);
+          all: unset;
+          cursor: pointer;
+          position: relative;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          pointer-events: auto;
+          z-index: 3;
+          background: linear-gradient(
+            -75deg,
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0.05)
+          );
+          border-radius: 999vw;
+          box-shadow:
+            inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+            inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+            0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+            0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+            0 0 0 0 rgba(255, 255, 255, 1);
+          backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+          -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+          -moz-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+          -ms-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+          transition: all var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        .glass-button:hover {
+          transform: scale(0.975);
+          backdrop-filter: blur(0.01em);
+          -webkit-backdrop-filter: blur(0.01em);
+          -moz-backdrop-filter: blur(0.01em);
+          -ms-backdrop-filter: blur(0.01em);
+          box-shadow:
+            inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+            inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+            0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+            0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
+            0 0 0 0 rgba(255, 255, 255, 1);
+        }
+
+        .glass-button span {
+          position: relative;
+          display: block;
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          letter-spacing: -0.05em;
+          font-weight: 500;
+          font-size: 1em;
+          color: rgba(50, 50, 50, 1);
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);
+          transition: all var(--anim--hover-time) var(--anim--hover-ease);
+          padding-inline: 1.5em;
+          padding-block: 0.875em;
+        }
+
+        .glass-button:hover span {
+          text-shadow: 0.025em 0.025em 0.025em rgba(0, 0, 0, 0.12);
+        }
+
+        .glass-button span::after {
+          content: '';
+          display: block;
+          position: absolute;
+          z-index: 1;
+          width: calc(100% - var(--border-width));
+          height: calc(100% - var(--border-width));
+          top: calc(0% + var(--border-width) / 2);
+          left: calc(0% + var(--border-width) / 2);
+          box-sizing: border-box;
+          border-radius: 999vw;
+          overflow: clip;
+          background: linear-gradient(
+            var(--angle-2),
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.5) 40% 50%,
+            rgba(255, 255, 255, 0) 55%
+          );
+          z-index: 3;
+          mix-blend-mode: screen;
+          pointer-events: none;
+          background-size: 200% 200%;
+          background-position: 0% 50%;
+          background-repeat: no-repeat;
+          transition:
+            background-position calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease),
+            --angle-2 calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
+        }
+
+        .glass-button:hover span::after {
+          background-position: 25% 50%;
+        }
+
+        .glass-button:active span::after {
+          background-position: 50% 15%;
+          --angle-2: -15deg;
+        }
+
+        .glass-button::after {
+          content: '';
+          position: absolute;
+          z-index: 1;
+          inset: 0;
+          border-radius: 999vw;
+          width: calc(100% + var(--border-width));
+          height: calc(100% + var(--border-width));
+          top: calc(0% - var(--border-width) / 2);
+          left: calc(0% - var(--border-width) / 2);
+          padding: var(--border-width);
+          box-sizing: border-box;
+          background: conic-gradient(
+              from var(--angle-1) at 50% 50%,
+              rgba(0, 0, 0, 0.5),
+              rgba(0, 0, 0, 0) 5% 40%,
+              rgba(0, 0, 0, 0.5) 50%,
+              rgba(0, 0, 0, 0) 60% 95%,
+              rgba(0, 0, 0, 0.5)
+            ),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          -webkit-mask-composite: xor;
+          transition:
+            all var(--anim--hover-time) var(--anim--hover-ease),
+            --angle-1 500ms ease;
+          box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-button:hover::after {
+          --angle-1: -125deg;
+        }
+
+        .glass-button:active::after {
+          --angle-1: -75deg;
+        }
+
+        .button-wrap:has(button:hover) .button-shadow {
+          filter: blur(clamp(2px, 0.0625em, 6px));
+          -webkit-filter: blur(clamp(2px, 0.0625em, 6px));
+          -moz-filter: blur(clamp(2px, 0.0625em, 6px));
+          -ms-filter: blur(clamp(2px, 0.0625em, 6px));
+          transition: filter var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        .button-wrap:has(button:hover) .button-shadow::after {
+          top: calc(var(--shadow-cuttoff-fix) - 0.875em);
+          opacity: 1;
+        }
+
+        .button-wrap:has(button:active) {
+          transform: rotate3d(1, 0, 0, 25deg);
+        }
+
+        .button-wrap:has(button:active) button {
+          box-shadow:
+            inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+            inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+            0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+            0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+            0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
+            0 0.25em 0 0 rgba(255, 255, 255, 0.75),
+            inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .button-wrap:has(button:active) .button-shadow {
+          filter: blur(clamp(2px, 0.125em, 12px));
+          -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+          -moz-filter: blur(clamp(2px, 0.125em, 12px));
+          -ms-filter: blur(clamp(2px, 0.125em, 12px));
+        }
+
+        .button-wrap:has(button:active) .button-shadow::after {
+          top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+          opacity: 0.75;
+        }
+
+        .button-wrap:has(button:active) span {
+          text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+          .glass-button span::after,
+          .glass-button:active span::after {
+            --angle-2: -45deg;
+          }
+
+          .glass-button::after,
+          .glass-button:hover::after,
+          .glass-button:active::after {
+            --angle-1: -75deg;
+          }
+        }
+      `}</style>
+    </div>
   );
 };

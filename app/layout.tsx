@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.scss';
 import { AOSProvider } from '@/components/layout/AOSProvider';
 import { CustomCursor } from '@/components/ui/CustomCursor';
+import { WaveBackground } from '@/components/labs/WaveBackground';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patrick-portfolio.vercel.app'),
@@ -76,6 +77,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen" suppressHydrationWarning>
+        <WaveBackground />
         <AOSProvider>
           <CustomCursor />
           {children}
