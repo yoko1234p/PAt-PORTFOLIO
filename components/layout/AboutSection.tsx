@@ -1,9 +1,34 @@
 'use client';
 
-import React from 'react';
-import { Card } from '@/components/ui/Card';
+import React, { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { GlowCard } from '@/components/ui/GlowCard';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk' }) => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(sectionRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const content =
     lang === 'zh-hk'
       ? {
@@ -94,66 +119,57 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
         };
 
   return (
-    <section id="about" className="py-32 px-6 bg-bg-secondary/30">
-      <div className="container mx-auto max-w-6xl">
-        <h2
-          className="text-4xl md:text-5xl font-bold text-text-primary mb-4 text-center"
-          data-aos="fade-up"
-        >
+    <section id="about" className="snap-section">
+      <div className="snap-content py-32 px-6 bg-prussian-blue-500 overflow-auto">
+      <div className="container mx-auto max-w-6xl" ref={sectionRef}>
+        <h2 className="text-4xl md:text-5xl font-bold text-sky-blue-900 mb-4 text-center">
           {content.title}
         </h2>
-        <p
-          className="text-text-secondary text-center mb-16 max-w-2xl mx-auto"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
+        <p className="text-sky-blue-700 text-center mb-16 max-w-2xl mx-auto">
           {lang === 'zh-hk'
             ? '深入了解我嘅專業背景與技術理念'
             : 'Learn more about my professional background and technical philosophy'}
         </p>
 
-        <div className="grid gap-8">
-          {/* Introduction */}
-          <div data-aos="fade-up" data-aos-delay="100">
-            <Card className="p-8 bg-white rounded-2xl shadow-sm">
-              <p className="text-lg text-text-primary leading-relaxed">{content.intro}</p>
-            </Card>
-          </div>
+        <GlowCard className="p-8">
+          {/* Content */}
+          <div className="space-y-8">
+            {/* Introduction */}
+            <div>
+              <p className="text-lg text-sky-blue-900 leading-relaxed">{content.intro}</p>
+            </div>
 
-          {/* Philosophy */}
-          <div data-aos="fade-up" data-aos-delay="200">
-            <Card className="p-8 bg-white rounded-2xl shadow-sm">
-              <h3 className="text-2xl font-bold text-text-primary mb-6">
+            {/* Philosophy */}
+            <div>
+              <h3 className="text-2xl font-bold text-selective-yellow-500 mb-6">
                 {content.philosophy.title}
               </h3>
               <div className="grid md:grid-cols-3 gap-8">
                 {content.philosophy.items.map((item, index) => (
                   <div key={index} className="space-y-2">
-                    <h4 className="text-lg font-semibold text-accent-primary">{item.title}</h4>
-                    <p className="text-sm text-text-secondary leading-relaxed">
+                    <h4 className="text-lg font-semibold text-ut-orange-500">{item.title}</h4>
+                    <p className="text-sm text-sky-blue-700 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
                 ))}
               </div>
-            </Card>
-          </div>
+            </div>
 
-          {/* Expertise */}
-          <div data-aos="fade-up" data-aos-delay="300">
-            <Card className="p-8 bg-white rounded-2xl shadow-sm">
-              <h3 className="text-2xl font-bold text-text-primary mb-6">
+            {/* Expertise */}
+            <div>
+              <h3 className="text-2xl font-bold text-selective-yellow-500 mb-6">
                 {content.expertise.title}
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
                 {content.expertise.items.map((item, index) => (
                   <div key={index} className="space-y-3">
-                    <h4 className="text-base font-semibold text-text-primary">{item.category}</h4>
+                    <h4 className="text-base font-semibold text-ut-orange-400">{item.category}</h4>
                     <div className="flex flex-wrap gap-2">
                       {item.skills.map((skill, i) => (
                         <span
                           key={i}
-                          className="text-xs text-text-secondary px-3 py-1.5 rounded-full bg-bg-secondary border border-gray-200 hover:border-accent-primary hover:text-accent-primary transition-colors"
+                          className="text-xs text-sky-blue-800 px-3 py-1.5 rounded-full bg-prussian-blue-600/40 border border-selective-yellow-500/30 hover:border-ut-orange-500 hover:text-selective-yellow-500 transition-colors backdrop-blur-sm"
                         >
                           {skill}
                         </span>
@@ -162,10 +178,11 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           </div>
-        </div>
+        </GlowCard>
       </div>
+    </div>
     </section>
   );
 };

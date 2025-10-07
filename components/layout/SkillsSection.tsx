@@ -26,16 +26,17 @@ export const SkillsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-
   ];
 
   return (
-    <section id="skills" className="py-32 px-6 relative">
+    <section id="skills" className="snap-section">
+      <div className="snap-content py-32 px-6 bg-prussian-blue-500 overflow-auto">
       <div className="container mx-auto max-w-6xl">
         <h2
-          className="text-4xl md:text-5xl font-bold text-text-primary mb-4 text-center"
+          className="text-4xl md:text-5xl font-bold text-selective-yellow-500 mb-4 text-center"
           data-aos="fade-up"
         >
           {title}
         </h2>
         <p
-          className="text-text-secondary text-center mb-16 max-w-2xl mx-auto"
+          className="text-sky-blue-700 text-center mb-16 max-w-2xl mx-auto"
           data-aos="fade-up"
           data-aos-delay="100"
         >
@@ -49,12 +50,12 @@ export const SkillsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
-              <Card className="h-full">
+              <Card className="h-full bg-prussian-blue-400/40 backdrop-blur-sm border border-ut-orange-500/20 rounded-2xl p-6">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center mr-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-selective-yellow-500 to-ut-orange-500 flex items-center justify-center mr-4">
                     <span className="text-2xl">{category.icon}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-text-primary">
+                  <h3 className="text-xl font-bold text-ut-orange-400">
                     {category.title}
                   </h3>
                 </div>
@@ -62,7 +63,7 @@ export const SkillsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-
                   {category.items.map((skill, i) => (
                     <span
                       key={i}
-                      className="px-4 py-2 text-sm rounded-lg bg-white border border-gray-200 text-text-primary font-medium transition-all hover:border-accent-primary hover:shadow-md hover:scale-105"
+                      className="px-4 py-2 text-sm rounded-lg bg-prussian-blue-600/40 border border-selective-yellow-500/30 text-sky-blue-800 font-medium transition-all hover:border-ut-orange-500 hover:text-selective-yellow-500 hover:shadow-md hover:scale-105"
                     >
                       {skill}
                     </span>
@@ -73,6 +74,7 @@ export const SkillsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-
           ))}
         </div>
       </div>
+    </div>
     </section>
   );
 };

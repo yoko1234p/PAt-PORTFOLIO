@@ -9,28 +9,103 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Base backgrounds
         bg: {
           base: "#FFFFFF",
-          secondary: "#FBFBFD",
-          tertiary: "#F5F5F7",
+          secondary: "#f9f9f8",
+          tertiary: "#e8f4fa",
+          dark: "#023047",
         },
+        // Sky Blue palette
+        'sky-blue': {
+          DEFAULT: '#8ecae6',
+          100: '#0d2e3d',
+          200: '#1b5c7a',
+          300: '#288ab7',
+          400: '#51aed9',
+          500: '#8ecae6',
+          600: '#a5d5eb',
+          700: '#bbdff0',
+          800: '#d2eaf5',
+          900: '#e8f4fa',
+        },
+        // Blue Green palette
+        'blue-green': {
+          DEFAULT: '#219ebc',
+          100: '#071f25',
+          200: '#0d3e4b',
+          300: '#145d70',
+          400: '#1a7d95',
+          500: '#219ebc',
+          600: '#39bcdc',
+          700: '#6bcce5',
+          800: '#9cddee',
+          900: '#ceeef6',
+        },
+        // Prussian Blue palette
+        'prussian-blue': {
+          DEFAULT: '#023047',
+          100: '#00090e',
+          200: '#01131c',
+          300: '#011c2a',
+          400: '#012638',
+          500: '#023047',
+          600: '#04699b',
+          700: '#06a3f1',
+          800: '#54c3fb',
+          900: '#a9e1fd',
+        },
+        // Selective Yellow palette
+        'selective-yellow': {
+          DEFAULT: '#ffb703',
+          100: '#342500',
+          200: '#684b00',
+          300: '#9c7000',
+          400: '#d09500',
+          500: '#ffb703',
+          600: '#ffc637',
+          700: '#ffd569',
+          800: '#ffe39b',
+          900: '#fff1cd',
+        },
+        // UT Orange palette
+        'ut-orange': {
+          DEFAULT: '#fb8500',
+          100: '#321b00',
+          200: '#643500',
+          300: '#965000',
+          400: '#c86b00',
+          500: '#fb8500',
+          600: '#ff9e2f',
+          700: '#ffb663',
+          800: '#ffce97',
+          900: '#ffe7cb',
+        },
+        // Accent shortcuts
         accent: {
-          primary: "#0071E3",    // Apple Blue
-          secondary: "#147CE5",
-          tertiary: "#06C",
-          success: "#34C759",    // Apple Green
-          warning: "#FF9500",    // Apple Orange
+          primary: '#219ebc',      // Blue Green
+          secondary: '#023047',    // Prussian Blue
+          tertiary: '#8ecae6',     // Sky Blue
+          yellow: '#ffb703',       // Selective Yellow
+          orange: '#fb8500',       // UT Orange
+          success: '#059669',
+          warning: '#fb8500',
         },
+        // Text colors
         text: {
-          primary: "#1D1D1F",    // Apple Dark Gray
-          secondary: "#6E6E73",  // Apple Mid Gray
-          tertiary: "#86868B",   // Apple Light Gray
+          primary: '#023047',      // Prussian Blue
+          secondary: '#219ebc',    // Blue Green
+          tertiary: '#8ecae6',     // Sky Blue
+          light: '#e8f4fa',        // Sky Blue 900
         },
+        // Glass effects
         glass: {
-          light: "rgba(255,255,255,0.72)",
-          lighter: "rgba(255,255,255,0.5)",
-          border: "rgba(0,0,0,0.04)",
-          shadow: "rgba(0,0,0,0.08)",
+          light: "rgba(142, 202, 230, 0.1)",
+          lighter: "rgba(142, 202, 230, 0.05)",
+          border: "rgba(2, 48, 71, 0.08)",
+          shadow: "rgba(2, 48, 71, 0.12)",
+          blue: "rgba(33, 158, 188, 0.1)",
+          prussian: "rgba(2, 48, 71, 0.1)",
         },
       },
       backdropBlur: {
@@ -41,15 +116,21 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-light': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'gradient-mesh': 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        'gradient-ocean': 'linear-gradient(135deg, #023047 0%, #219ebc 50%, #8ecae6 100%)',
+        'gradient-sky': 'linear-gradient(135deg, #8ecae6 0%, #a5d5eb 50%, #e8f4fa 100%)',
+        'gradient-prussian': 'linear-gradient(135deg, #023047 0%, #04699b 50%, #06a3f1 100%)',
+        'gradient-sunset': 'linear-gradient(135deg, #fb8500 0%, #ffb703 50%, #ffd569 100%)',
+        'gradient-vibrant': 'linear-gradient(135deg, #219ebc 0%, #8ecae6 50%, #ffb703 100%)',
       },
       boxShadow: {
-        'sm': '0 1px 3px 0 rgba(0, 0, 0, 0.08)',
-        'DEFAULT': '0 4px 12px 0 rgba(0, 0, 0, 0.08)',
-        'md': '0 8px 24px 0 rgba(0, 0, 0, 0.12)',
-        'lg': '0 16px 48px 0 rgba(0, 0, 0, 0.16)',
-        'xl': '0 24px 64px 0 rgba(0, 0, 0, 0.20)',
+        'sm': '0 1px 3px 0 rgba(2, 48, 71, 0.08)',
+        'DEFAULT': '0 4px 12px 0 rgba(2, 48, 71, 0.08)',
+        'md': '0 8px 24px 0 rgba(2, 48, 71, 0.12)',
+        'lg': '0 16px 48px 0 rgba(2, 48, 71, 0.16)',
+        'xl': '0 24px 64px 0 rgba(2, 48, 71, 0.20)',
+        'glow-blue': '0 0 20px rgba(33, 158, 188, 0.3)',
+        'glow-sky': '0 0 20px rgba(142, 202, 230, 0.3)',
+        'glow-yellow': '0 0 20px rgba(255, 183, 3, 0.3)',
       },
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'system-ui', 'sans-serif'],
@@ -65,6 +146,8 @@ const config: Config = {
         'slide-down': 'slideDown 0.5s ease-out',
         'scale-in': 'scaleIn 0.4s ease-out',
         'glow': 'glow 2s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -86,6 +169,10 @@ const config: Config = {
         glow: {
           '0%, 100%': { opacity: '0.5' },
           '50%': { opacity: '1' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
         },
       },
     },

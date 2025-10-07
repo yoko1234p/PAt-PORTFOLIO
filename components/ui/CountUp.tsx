@@ -1,6 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface CountUpProps {
   end: number;
@@ -13,69 +19,61 @@ interface CountUpProps {
 
 export const CountUp: React.FC<CountUpProps> = ({
   end,
-  duration = 2000,
+  duration = 2,
   suffix = '',
   prefix = '',
   className = '',
   decimals = 0,
 }) => {
   const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const countRef = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true);
-            animateCount();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
+    const element = countRef.current;
+    if (!element || hasAnimated.current) return;
 
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
+    const ctx = gsap.context(() => {
+      // Use ScrollTrigger to start animation when element is visible
+      ScrollTrigger.create({
+        trigger: element,
+        start: 'top 85%',
+        onEnter: () => {
+          if (hasAnimated.current) return;
+          hasAnimated.current = true;
 
-    return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
-      }
-    };
-  }, [hasAnimated]);
+          // GSAP CountUp animation
+          const counter = { value: 0 };
+          gsap.to(counter, {
+            value: end,
+            duration: duration,
+            ease: 'power2.out',
+            onUpdate: () => {
+              setCount(counter.value);
+            },
+          });
 
-  const animateCount = () => {
-    const startTime = Date.now();
-    const startValue = 0;
+          // Simple fade in
+          gsap.from(element, {
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          });
+        },
+        once: true,
+      });
+    });
 
-    const updateCount = () => {
-      const now = Date.now();
-      const progress = Math.min((now - startTime) / duration, 1);
-
-      // Easing function (easeOutExpo)
-      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-
-      const currentCount = startValue + (end - startValue) * easeProgress;
-      setCount(currentCount);
-
-      if (progress < 1) {
-        requestAnimationFrame(updateCount);
-      } else {
-        setCount(end);
-      }
-    };
-
-    requestAnimationFrame(updateCount);
-  };
+    return () => ctx.revert();
+  }, [end, duration]);
 
   const displayValue = decimals > 0 ? count.toFixed(decimals) : Math.floor(count);
 
   return (
     <span ref={countRef} className={className}>
-      {prefix}{displayValue}{suffix}
+      {prefix}
+      {displayValue}
+      {suffix}
     </span>
   );
 };

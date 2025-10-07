@@ -1,19 +1,38 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 export const CustomCursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const glassCircleRef = useRef<HTMLDivElement>(null);
+  const specularRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
 
+  const mouse = useRef({ x: 0, y: 0 });
+
   useEffect(() => {
+    const cursor = cursorRef.current;
+    const glassCircle = glassCircleRef.current;
+    const specular = specularRef.current;
+
+    if (!cursor || !glassCircle || !specular) return;
+
+    // Smooth cursor follow with GSAP
     const updatePosition = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${e.clientX}px`;
-        cursorRef.current.style.top = `${e.clientY}px`;
-      }
+      mouse.current = { x: e.clientX, y: e.clientY };
     };
+
+    // Animate cursor position with elastic easing
+    gsap.ticker.add(() => {
+      gsap.to(cursor, {
+        x: mouse.current.x,
+        y: mouse.current.y,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+    });
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -24,17 +43,72 @@ export const CustomCursor: React.FC = () => {
         target.closest('button')
       ) {
         setIsHovering(true);
+
+        // GSAP hover animation
+        gsap.to(glassCircle, {
+          width: 64,
+          height: 64,
+          duration: 0.4,
+          ease: 'power2.out',
+        });
+
+        gsap.to(specular, {
+          opacity: 0.9,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
       } else {
         setIsHovering(false);
+
+        // GSAP reset animation
+        gsap.to(glassCircle, {
+          width: 48,
+          height: 48,
+          duration: 0.4,
+          ease: 'elastic.out(1, 0.5)',
+        });
+
+        gsap.to(specular, {
+          opacity: 0.6,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
       }
     };
 
     const handleMouseDown = () => {
       setIsClicking(true);
+
+      // GSAP click animation with bounce
+      gsap.to(glassCircle, {
+        width: 40,
+        height: 40,
+        duration: 0.15,
+        ease: 'power2.in',
+      });
+
+      gsap.to(specular, {
+        opacity: 1,
+        duration: 0.1,
+      });
     };
 
     const handleMouseUp = () => {
       setIsClicking(false);
+
+      // GSAP release animation
+      const targetSize = isHovering ? 64 : 48;
+      gsap.to(glassCircle, {
+        width: targetSize,
+        height: targetSize,
+        duration: 0.5,
+        ease: 'elastic.out(1, 0.4)',
+      });
+
+      gsap.to(specular, {
+        opacity: isHovering ? 0.9 : 0.6,
+        duration: 0.2,
+      });
     };
 
     window.addEventListener('mousemove', updatePosition, { passive: true });
@@ -47,8 +121,9 @@ export const CustomCursor: React.FC = () => {
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      gsap.ticker.remove(() => {});
     };
-  }, []);
+  }, [isHovering]);
 
   return (
     <div
@@ -59,10 +134,10 @@ export const CustomCursor: React.FC = () => {
       }}
     >
       {/* Glass circle */}
-      <div className="glass-circle"></div>
+      <div ref={glassCircleRef} className="glass-circle"></div>
 
       {/* Specular highlight */}
-      <div className="specular"></div>
+      <div ref={specularRef} className="specular"></div>
 
       <style jsx>{`
         .glass-cursor {

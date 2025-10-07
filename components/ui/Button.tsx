@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost';
@@ -13,10 +14,55 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleMouseEnter = () => {
+    if (variant === 'ghost') {
+      gsap.to(buttonRef.current, {
+        scale: 1.05,
+        borderColor: 'rgba(0, 113, 227, 0.8)',
+        backgroundColor: 'rgba(0, 113, 227, 0.1)',
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    } else if (variant === 'secondary') {
+      gsap.to(buttonRef.current, {
+        scale: 1.05,
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        borderColor: 'rgba(0, 113, 227, 0.8)',
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (variant === 'ghost') {
+      gsap.to(buttonRef.current, {
+        scale: 1,
+        borderColor: 'rgba(0, 113, 227, 0.2)',
+        backgroundColor: 'rgba(0, 113, 227, 0)',
+        duration: 0.3,
+        ease: 'elastic.out(1, 0.5)',
+      });
+    } else if (variant === 'secondary') {
+      gsap.to(buttonRef.current, {
+        scale: 1,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        borderColor: 'rgba(0, 113, 227, 0.2)',
+        duration: 0.3,
+        ease: 'elastic.out(1, 0.5)',
+      });
+    }
+  };
+
   if (variant === 'ghost') {
     return (
       <button
-        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 border-2 border-accent-primary/20 text-accent-primary hover:border-accent-primary hover:bg-accent-primary/5 ${className}`}
+        ref={buttonRef}
+        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 border-2 border-accent-primary/20 text-accent-primary ${className}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         {...props}
       >
         {children}
@@ -27,7 +73,10 @@ export const Button: React.FC<ButtonProps> = ({
   if (variant === 'secondary') {
     return (
       <button
-        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 text-accent-primary bg-white/80 backdrop-blur-sm border border-accent-primary/20 hover:bg-white hover:border-accent-primary hover:shadow-lg hover:scale-105 ${className}`}
+        ref={buttonRef}
+        className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 text-accent-primary bg-white/80 backdrop-blur-sm border border-accent-primary/20 ${className}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         {...props}
       >
         {children}
@@ -158,7 +207,7 @@ export const Button: React.FC<ButtonProps> = ({
           letter-spacing: -0.05em;
           font-weight: 500;
           font-size: 1em;
-          color: rgba(50, 50, 50, 1);
+          color: rgba(255, 255, 255, 1);
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);

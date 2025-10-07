@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.scss';
 import { AOSProvider } from '@/components/layout/AOSProvider';
-import { CustomCursor } from '@/components/ui/CustomCursor';
+import { LiquidGlassCursor } from '@/components/ui/LiquidGlassCursor';
 import { WaveBackground } from '@/components/labs/WaveBackground';
+import { ScrollLockProvider } from './ScrollLockProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patrick-portfolio.vercel.app'),
@@ -79,7 +80,8 @@ export default function RootLayout({
       <body className="antialiased min-h-screen" suppressHydrationWarning>
         <WaveBackground />
         <AOSProvider>
-          <CustomCursor />
+          <ScrollLockProvider />
+          <LiquidGlassCursor />
           {children}
         </AOSProvider>
       </body>
