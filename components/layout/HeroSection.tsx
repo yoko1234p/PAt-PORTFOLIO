@@ -162,11 +162,11 @@ export const HeroSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
       className="snap-section"
     >
-      <div className="snap-content bg-prussian-blue-500 overflow-hidden"
-    >
+      <div className="snap-content bg-prussian-blue-500 overflow-hidden">
       {/* Colorful background shapes for glass effect */}
       <div ref={backgroundShapesRef} className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-br from-blue-green-500 via-sky-blue-500 to-blue-green-600 rounded-full mix-blend-screen filter blur-3xl opacity-20" />

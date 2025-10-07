@@ -23,9 +23,7 @@ export default function Home() {
       <Header lang="zh-hk" />
       <PageIndicator sections={sections} />
       <main style={{ scrollSnapType: 'y mandatory' }}>
-        <div id="hero">
-          <HeroSection lang="zh-hk" />
-        </div>
+        <HeroSection lang="zh-hk" />
         <ProjectsSection lang="zh-hk" />
         <ExperienceSection lang="zh-hk" />
         <SkillsSection lang="zh-hk" />
