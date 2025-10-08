@@ -1,17 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Footer } from '@/components/layout/Footer';
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk' }) => {
+  const sectionRef = useRef<HTMLElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Parallax effect on scroll
+      gsap.to(sectionRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 3,
+          ease: 'power1.inOut',
+        },
+        y: -20,
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const content =
     lang === 'zh-hk'
@@ -69,11 +94,11 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
   };
 
   return (
-    <section id="contact" className="snap-section">
-      <div className="snap-content py-32 px-6 bg-prussian-blue-500 overflow-visible flex flex-col">
-        <div className="container mx-auto max-w-5xl flex-1">
+    <section id="contact" ref={sectionRef} className="snap-section">
+      <div className="snap-content bg-prussian-blue-500 overflow-visible flex items-center justify-center min-h-screen">
+        <div className="container mx-auto max-w-5xl px-6 py-16 pt-28">
           <h2
-            className="text-4xl md:text-5xl font-bold text-selective-yellow-500 mb-4 text-center"
+            className="text-4xl md:text-5xl font-bold text-sky-blue-400 mb-4 text-center"
             data-aos="fade-up"
           >
             {content.title}
@@ -89,12 +114,12 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
           <div className="grid md:grid-cols-5 gap-8">
             {/* Contact Form */}
             <div className="md:col-span-3" data-aos="fade-right">
-              <Card className="bg-prussian-blue-400/40 backdrop-blur-sm border border-selective-yellow-500/20 rounded-2xl p-6">
+              <Card className="bg-prussian-blue-400/40 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-semibold text-selective-yellow-500 mb-2"
+                      className="block text-sm font-semibold text-sky-blue-400 mb-2"
                     >
                       {content.form.name}
                     </label>
@@ -105,7 +130,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-selective-yellow-500 transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
                       placeholder={lang === 'zh-hk' ? '你的名字' : 'Your name'}
                     />
                   </div>
@@ -113,7 +138,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-semibold text-selective-yellow-500 mb-2"
+                      className="block text-sm font-semibold text-sky-blue-400 mb-2"
                     >
                       {content.form.email}
                     </label>
@@ -124,7 +149,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-selective-yellow-500 transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
                       placeholder={lang === 'zh-hk' ? '你的電郵' : 'your.email@example.com'}
                     />
                   </div>
@@ -132,7 +157,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-semibold text-selective-yellow-500 mb-2"
+                      className="block text-sm font-semibold text-sky-blue-400 mb-2"
                     >
                       {content.form.message}
                     </label>
@@ -143,7 +168,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-selective-yellow-500 resize-none transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-ut-orange-500/30 bg-prussian-blue-600/40 text-sky-blue-900 placeholder:text-sky-blue-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 resize-none transition-all"
                       placeholder={lang === 'zh-hk' ? '你的訊息...' : 'Your message...'}
                     />
                   </div>
@@ -153,7 +178,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                   </Button>
 
                   {status === 'success' && (
-                    <p className="text-sm text-selective-yellow-500 text-center font-medium">
+                    <p className="text-sm text-sky-blue-400 text-center font-medium">
                       ✓ {content.form.success}
                     </p>
                   )}
@@ -169,8 +194,8 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
 
             {/* Contact Info */}
             <div className="md:col-span-2 space-y-6" data-aos="fade-left">
-              <Card className="bg-prussian-blue-400/40 backdrop-blur-sm border border-selective-yellow-500/20 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-selective-yellow-500 mb-6">
+              <Card className="bg-prussian-blue-400/40 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6">
+                <h3 className="text-xl font-bold text-sky-blue-400 mb-6">
                   {content.direct}
                 </h3>
 
@@ -179,7 +204,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                     <p className="text-sm text-sky-blue-700 mb-1 font-medium">Email</p>
                     <a
                       href={`mailto:${content.email}`}
-                      className="text-ut-orange-400 hover:text-selective-yellow-500 transition-colors font-semibold"
+                      className="text-ut-orange-400 hover:text-sky-blue-400 transition-colors font-semibold"
                     >
                       {content.email}
                     </a>
@@ -189,7 +214,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                     <p className="text-sm text-sky-blue-700 mb-1 font-medium">Phone</p>
                     <a
                       href={`tel:${content.phone.replace(/\s/g, '')}`}
-                      className="text-ut-orange-400 hover:text-selective-yellow-500 transition-colors font-semibold"
+                      className="text-ut-orange-400 hover:text-sky-blue-400 transition-colors font-semibold"
                     >
                       {content.phone}
                     </a>
@@ -197,7 +222,7 @@ export const ContactSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh
                 </div>
               </Card>
 
-              <Card className="bg-gradient-to-br from-selective-yellow-500 to-ut-orange-500 text-prussian-blue-500 rounded-2xl p-6 border-0">
+              <Card className="bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 text-prussian-blue-500 rounded-2xl p-6 border-0">
                 <h4 className="font-bold mb-3">{lang === 'zh-hk' ? '可用性' : 'Availability'}</h4>
                 <p className="text-sm opacity-90">
                   {lang === 'zh-hk'

@@ -54,21 +54,21 @@ export const PageIndicator: React.FC<PageIndicatorProps> = ({ sections }) => {
   };
 
   return (
-    <nav className="fixed right-8 top-1/2 -translate-y-1/2 z-[200] hidden md:block">
-      <ul className="flex flex-col gap-1">
+    <nav className="fixed right-8 top-1/2 -translate-y-1/2 z-[40] hidden md:block pointer-events-none">
+      <ul className="flex flex-col gap-1 pointer-events-auto">
         {sections.map((section, index) => (
           <li key={section.id}>
             <button
               onClick={() => handleClick(section.id)}
-              className="group relative flex items-center justify-center p-3"
+              className="group relative flex items-center justify-center p-3 pointer-events-auto"
               aria-label={`Go to ${section.label}`}
             >
               {/* Dot indicator */}
               <span
                 className={`block w-5 h-5 rounded-full border-2 transition-all duration-300 ${
                   activeSection === index
-                    ? 'bg-selective-yellow-500 border-selective-yellow-500 scale-150'
-                    : 'bg-transparent border-sky-blue-600 hover:border-selective-yellow-500 hover:scale-125'
+                    ? 'bg-cyan-400 border-cyan-400 scale-150'
+                    : 'bg-transparent border-sky-blue-600 hover:border-cyan-400 hover:scale-125'
                 }`}
                 style={
                   activeSection === index
@@ -83,7 +83,7 @@ export const PageIndicator: React.FC<PageIndicatorProps> = ({ sections }) => {
               <span
                 className={`absolute right-12 whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none backdrop-blur-sm ${
                   activeSection === index
-                    ? 'bg-selective-yellow-500 text-prussian-blue-500'
+                    ? 'bg-cyan-400 text-prussian-blue-500'
                     : 'bg-prussian-blue-400 text-sky-blue-900'
                 }`}
                 style={{

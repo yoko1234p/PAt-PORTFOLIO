@@ -24,6 +24,18 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
           start: 'top 80%',
         },
       });
+
+      // Parallax effect on scroll
+      gsap.to(sectionRef.current?.parentElement, {
+        scrollTrigger: {
+          trigger: sectionRef.current?.parentElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 3,
+          ease: 'power1.inOut',
+        },
+        y: -20,
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -120,8 +132,8 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
 
   return (
     <section id="about" className="snap-section">
-      <div className="snap-content py-32 px-6 bg-prussian-blue-500 overflow-auto">
-      <div className="container mx-auto max-w-6xl" ref={sectionRef}>
+      <div className="snap-content bg-prussian-blue-500 overflow-auto flex items-center justify-center min-h-screen">
+      <div className="container mx-auto max-w-6xl px-6 py-16 pt-28" ref={sectionRef}>
         <h2 className="text-4xl md:text-5xl font-bold text-sky-blue-900 mb-4 text-center">
           {content.title}
         </h2>
@@ -141,7 +153,7 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
 
             {/* Philosophy */}
             <div>
-              <h3 className="text-2xl font-bold text-selective-yellow-500 mb-6">
+              <h3 className="text-2xl font-bold text-sky-blue-400 mb-6">
                 {content.philosophy.title}
               </h3>
               <div className="grid md:grid-cols-3 gap-8">
@@ -158,7 +170,7 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
 
             {/* Expertise */}
             <div>
-              <h3 className="text-2xl font-bold text-selective-yellow-500 mb-6">
+              <h3 className="text-2xl font-bold text-sky-blue-400 mb-6">
                 {content.expertise.title}
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
@@ -169,7 +181,7 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
                       {item.skills.map((skill, i) => (
                         <span
                           key={i}
-                          className="text-xs text-sky-blue-800 px-3 py-1.5 rounded-full bg-prussian-blue-600/40 border border-selective-yellow-500/30 hover:border-ut-orange-500 hover:text-selective-yellow-500 transition-colors backdrop-blur-sm"
+                          className="text-xs text-sky-blue-800 px-3 py-1.5 rounded-full bg-prussian-blue-600/40 border border-cyan-400/30 hover:border-ut-orange-500 hover:text-sky-blue-400 transition-colors backdrop-blur-sm"
                         >
                           {skill}
                         </span>

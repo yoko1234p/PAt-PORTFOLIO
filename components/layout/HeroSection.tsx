@@ -117,23 +117,11 @@ export const HeroSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk
           '-=0.2'
         );
 
-      // Parallax effect on scroll
-      gsap.to(sectionRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        opacity: 0.3,
-        y: -100,
-      });
-
       // Scroll indicator animation
       gsap.to(scrollIndicatorRef.current?.querySelector('svg') ?? [], {
-        y: 5,
-        duration: 0.8,
-        ease: 'power1.inOut',
+        y: 8,
+        duration: 1.5,
+        ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
       });
@@ -161,126 +149,129 @@ export const HeroSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk
         };
 
   return (
-    <section
-      id="hero"
-      ref={sectionRef}
-      className="snap-section"
-    >
+    <section id="hero" ref={sectionRef} className="snap-section">
       <div className="snap-content bg-prussian-blue-500 overflow-hidden">
-      {/* Colorful background shapes for glass effect */}
-      <div ref={backgroundShapesRef} className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-br from-blue-green-500 via-sky-blue-500 to-blue-green-600 rounded-full mix-blend-screen filter blur-3xl opacity-20" />
-        <div className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-br from-sky-blue-400 via-blue-green-600 to-prussian-blue-700 rounded-full mix-blend-screen filter blur-3xl opacity-20" />
-        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-gradient-to-br from-selective-yellow-500 via-ut-orange-500 to-blue-green-500 rounded-full mix-blend-screen filter blur-3xl opacity-15" />
-      </div>
+        {/* Colorful background shapes for glass effect */}
+        <div ref={backgroundShapesRef} className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-br from-blue-green-500 via-sky-blue-500 to-blue-green-600 rounded-full mix-blend-screen filter blur-3xl opacity-20" />
+          <div className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-br from-sky-blue-400 via-blue-green-600 to-prussian-blue-700 rounded-full mix-blend-screen filter blur-3xl opacity-20" />
+          <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-gradient-to-br from-cyan-400 via-ut-orange-500 to-blue-green-500 rounded-full mix-blend-screen filter blur-3xl opacity-15" />
+        </div>
 
-      {/* Dark gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-prussian-blue-500 via-prussian-blue-400 to-prussian-blue-600" />
+        {/* Dark gradient background overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-prussian-blue-500 via-prussian-blue-400 to-prussian-blue-600" />
 
-      <SpriteCanvas />
-      <CursorGlow />
+        <SpriteCanvas />
+        <CursorGlow />
 
-      {/* Content */}
-      <div className="relative z-20 container mx-auto px-6 text-center pt-20">
-        <div className="max-w-6xl mx-auto">
-          <p
-            ref={subtitleRef}
-            className="text-sky-blue-600 font-medium text-lg md:text-xl mb-6 tracking-tight"
-          >
-            {content.subtitle}
-          </p>
+        {/* Content */}
+        <div className="relative z-20 container mx-auto px-6 text-center flex items-center justify-center min-h-screen">
+          <div className="max-w-6xl mx-auto">
+            <p
+              ref={subtitleRef}
+              className="text-sky-blue-600 font-medium text-lg md:text-xl mb-6 tracking-tight"
+            >
+              {content.subtitle}
+            </p>
 
-          <h1 ref={titleRef} className="mb-8">
-            {content.title.map((line, i) => (
-              <div
-                key={i}
-                className="text-display-sm md:text-display lg:text-display-lg font-semibold tracking-tight"
-                style={{
-                  background:
-                    i === 1
-                      ? 'linear-gradient(90deg, #8ecae6 0%, #219ebc 50%, #ffb703 100%)'
-                      : undefined,
-                  WebkitBackgroundClip: i === 1 ? 'text' : undefined,
-                  WebkitTextFillColor: i === 1 ? 'transparent' : undefined,
-                  backgroundClip: i === 1 ? 'text' : undefined,
-                  color: i === 1 ? undefined : '#e8f4fa',
-                }}
+            <h1 ref={titleRef} className="mb-8">
+              {content.title.map((line, i) => (
+                <div
+                  key={i}
+                  className="text-display-sm md:text-display lg:text-display-lg font-semibold tracking-tight"
+                  style={{
+                    background:
+                      i === 1
+                        ? 'linear-gradient(90deg, #8ecae6 0%, #219ebc 50%, #ffb703 100%)'
+                        : undefined,
+                    WebkitBackgroundClip: i === 1 ? 'text' : undefined,
+                    WebkitTextFillColor: i === 1 ? 'transparent' : undefined,
+                    backgroundClip: i === 1 ? 'text' : undefined,
+                    color: i === 1 ? undefined : '#e8f4fa',
+                  }}
+                >
+                  {line}
+                </div>
+              ))}
+            </h1>
+
+            <p
+              ref={descriptionRef}
+              className="text-xl md:text-2xl text-sky-blue-700 mb-12 max-w-2xl mx-auto font-normal"
+            >
+              {content.description}
+            </p>
+
+            <div
+              ref={ctaRef}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24"
+            >
+              <Button
+                variant="primary"
+                onClick={() =>
+                  document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
+                }
               >
-                {line}
+                {content.ctaPrimary}
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                {content.ctaSecondary}
+              </Button>
+            </div>
+
+            {/* Minimal stats - Apple style */}
+            <div
+              ref={statsRef}
+              className="grid grid-cols-3 gap-12 max-w-3xl mx-auto border-t border-b border-sky-blue-800 py-8"
+            >
+              <div>
+                <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
+                  <CountUp end={5} suffix="+" />
+                </h3>
+                <p className="text-sky-blue-700 text-sm">{lang === 'zh-hk' ? '年經驗' : 'Years'}</p>
               </div>
-            ))}
-          </h1>
-
-          <p
-            ref={descriptionRef}
-            className="text-xl md:text-2xl text-sky-blue-700 mb-12 max-w-2xl mx-auto font-normal"
-          >
-            {content.description}
-          </p>
-
-          <div
-            ref={ctaRef}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24"
-          >
-            <Button
-              variant="primary"
-              onClick={() =>
-                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              {content.ctaPrimary}
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() =>
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              {content.ctaSecondary}
-            </Button>
-          </div>
-
-          {/* Minimal stats - Apple style */}
-          <div
-            ref={statsRef}
-            className="grid grid-cols-3 gap-12 max-w-3xl mx-auto border-t border-b border-sky-blue-800 py-8"
-          >
-            <div>
-              <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
-                <CountUp end={5} suffix="+" />
-              </h3>
-              <p className="text-sky-blue-700 text-sm">{lang === 'zh-hk' ? '年經驗' : 'Years'}</p>
-            </div>
-            <div>
-              <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
-                <CountUp end={20} suffix="+" />
-              </h3>
-              <p className="text-sky-blue-700 text-sm">{lang === 'zh-hk' ? '項目' : 'Projects'}</p>
-            </div>
-            <div>
-              <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
-                <CountUp end={3} />
-              </h3>
-              <p className="text-sky-blue-700 text-sm">{lang === 'zh-hk' ? '公司' : 'Companies'}</p>
+              <div>
+                <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
+                  <CountUp end={20} suffix="+" />
+                </h3>
+                <p className="text-sky-blue-700 text-sm">
+                  {lang === 'zh-hk' ? '項目' : 'Projects'}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-5xl font-semibold text-sky-blue-500 mb-1">
+                  <CountUp end={3} />
+                </h3>
+                <p className="text-sky-blue-700 text-sm">
+                  {lang === 'zh-hk' ? '公司' : 'Companies'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* Scroll indicator - minimal */}
-      <div ref={scrollIndicatorRef} className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100]">
-        <div className="flex flex-col items-center gap-2 text-sky-blue-600">
-          <span className="text-xs font-medium">Scroll</span>
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+        {/* Scroll indicator - minimal */}
+        <div
+          ref={scrollIndicatorRef}
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100]"
+        >
+          <div className="flex flex-col items-center gap-2 text-sky-blue-600">
+            <span className="text-xs font-medium">Scroll</span>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
     </section>
   );
 };

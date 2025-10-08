@@ -60,21 +60,11 @@ export const projects = [
     icon: "💳"
   },
   {
-    name: "SKU 管理系統",
-    stack: ["PHP", "MySQL", "JavaScript"],
+    name: "ERP 整合方案 (含 SKU 管理)",
+    stack: ["Express.js", "MySQL", "JWT", "PHP"],
     notes: [
-      "商品庫存即時追蹤、多倉庫管理",
-      "自動化訂單處理、批量匯入/匯出功能"
-    ],
-    links: [],
-    icon: "📦"
-  },
-  {
-    name: "ERP 整合方案",
-    stack: ["Express.js", "MySQL", "JWT"],
-    notes: [
-      "跨分店數據同步、權限管理系統",
-      "API 整合第三方服務（物流/金流）"
+      "商品庫存即時追蹤、多倉庫 SKU 管理",
+      "跨分店數據同步、權限管理、API 整合第三方服務（物流/金流）"
     ],
     links: [],
     icon: "🔗"

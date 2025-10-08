@@ -19,20 +19,21 @@ export const CustomCursor: React.FC = () => {
 
     if (!cursor || !glassCircle || !specular) return;
 
-    // Smooth cursor follow with GSAP
+    // Use GSAP quickSetter for optimal performance
+    const xSetter = gsap.quickSetter(cursor, 'x', 'px');
+    const ySetter = gsap.quickSetter(cursor, 'y', 'px');
+
     const updatePosition = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Animate cursor position with elastic easing
-    gsap.ticker.add(() => {
-      gsap.to(cursor, {
-        x: mouse.current.x,
-        y: mouse.current.y,
-        duration: 0.6,
-        ease: 'power2.out',
-      });
-    });
+    // Animate cursor position with RAF for smooth tracking
+    const ticker = () => {
+      xSetter(mouse.current.x);
+      ySetter(mouse.current.y);
+    };
+
+    gsap.ticker.add(ticker);
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -121,7 +122,7 @@ export const CustomCursor: React.FC = () => {
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      gsap.ticker.remove(() => {});
+      gsap.ticker.remove(ticker);
     };
   }, [isHovering]);
 

@@ -1,19 +1,44 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Card } from '@/components/ui/Card';
 import { projects } from '@/data/profile';
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export const ProjectsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-hk' }) => {
+  const sectionRef = useRef<HTMLElement>(null);
   const title = lang === 'zh-hk' ? '精選作品' : 'Featured Projects';
   const viewText = lang === 'zh-hk' ? '查看項目' : 'View Project';
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Parallax effect on scroll
+      gsap.to(sectionRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 3,
+          ease: 'power1.inOut',
+        },
+        y: -20,
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="work" className="snap-section">
-      <div className="snap-content py-32 px-6 bg-prussian-blue-400 overflow-auto">
-      <div className="container mx-auto max-w-7xl">
+    <section id="work" ref={sectionRef} className="snap-section">
+      <div className="snap-content bg-prussian-blue-400 overflow-auto flex items-center justify-center min-h-screen">
+      <div className="container mx-auto max-w-7xl px-6 py-16 pt-28">
         <h2
-          className="text-4xl md:text-5xl font-bold text-selective-yellow-500 mb-4 text-center"
+          className="text-4xl md:text-5xl font-bold text-sky-blue-400 mb-4 text-center"
           data-aos="fade-up"
         >
           {title}
@@ -31,12 +56,12 @@ export const ProjectsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'z
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <div key={index} data-aos="fade-up" data-aos-delay={index * 100}>
-              <Card className="h-full flex flex-col group bg-prussian-blue-500/40 backdrop-blur-sm border border-selective-yellow-500/20 rounded-2xl p-6">
+              <Card className="h-full flex flex-col group bg-prussian-blue-500/40 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6">
                 <div className="mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-selective-yellow-500 to-ut-orange-500 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 flex items-center justify-center mb-4">
                     <span className="text-white text-2xl">{project.icon || '💼'}</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-sky-blue-900 mb-3 group-hover:text-selective-yellow-500 transition-colors">
+                  <h3 className="text-2xl font-bold text-sky-blue-900 mb-3 group-hover:text-sky-blue-400 transition-colors">
                     {project.name}
                   </h3>
                 </div>
@@ -45,7 +70,7 @@ export const ProjectsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'z
                   {project.stack.map((tech, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 text-xs rounded-full bg-selective-yellow-500/10 text-selective-yellow-400 border border-selective-yellow-500/30 font-medium"
+                      className="px-3 py-1 text-xs rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/30 font-medium"
                     >
                       {tech}
                     </span>
@@ -62,14 +87,14 @@ export const ProjectsSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'z
                 </ul>
 
                 {project.links.length > 0 && (
-                  <div className="mt-auto pt-4 border-t border-selective-yellow-500/20">
+                  <div className="mt-auto pt-4 border-t border-cyan-400/20">
                     {project.links.slice(0, 1).map((link, i) => (
                       <a
                         key={i}
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm font-semibold text-selective-yellow-500 hover:text-ut-orange-500 transition-colors group"
+                        className="inline-flex items-center text-sm font-semibold text-sky-blue-400 hover:text-ut-orange-500 transition-colors group"
                       >
                         {viewText}
                         <svg

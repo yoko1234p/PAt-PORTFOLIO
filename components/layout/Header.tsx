@@ -15,14 +15,15 @@ export const Header: React.FC<HeaderProps> = ({ lang = 'zh-hk' }) => {
   const navItemsRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    // Initial animation
+    // Initial animation - non-blocking, runs independently
     const ctx = gsap.context(() => {
       gsap.from(logoRef.current, {
         opacity: 0,
         x: -20,
         duration: 0.6,
         ease: 'power3.out',
-        delay: 0.2,
+        delay: 0.5,
+        overwrite: 'auto',
       });
 
       gsap.from(navItemsRef.current?.children ?? [], {
@@ -31,9 +32,10 @@ export const Header: React.FC<HeaderProps> = ({ lang = 'zh-hk' }) => {
         duration: 0.5,
         stagger: 0.08,
         ease: 'back.out(1.5)',
-        delay: 0.4,
+        delay: 0.7,
+        overwrite: 'auto',
       });
-    });
+    }, headerRef);
 
     const handleScroll = () => {
       const isScrolled = window.scrollY > 20;
@@ -91,12 +93,12 @@ export const Header: React.FC<HeaderProps> = ({ lang = 'zh-hk' }) => {
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 right-0 z-[300] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-300 pointer-events-none ${
         scrolled ? 'shadow-sm' : ''
       }`}
     >
-      <nav className="container mx-auto px-6">
-        <div className="flex items-center justify-between">
+      <nav className="container mx-auto px-6 h-full pointer-events-auto">
+        <div className="flex items-center justify-between h-full">
           <Link
             ref={logoRef}
             href="/"
@@ -111,14 +113,14 @@ export const Header: React.FC<HeaderProps> = ({ lang = 'zh-hk' }) => {
                 <a
                   href={item.href}
                   className="relative text-text-secondary hover:text-accent-primary transition-colors font-medium group"
-                  onMouseEnter={(e) => {
+                  onMouseEnter={e => {
                     gsap.to(e.currentTarget, {
                       y: -2,
                       duration: 0.3,
                       ease: 'power2.out',
                     });
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={e => {
                     gsap.to(e.currentTarget, {
                       y: 0,
                       duration: 0.3,
