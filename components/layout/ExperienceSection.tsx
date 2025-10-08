@@ -17,16 +17,18 @@ export const ExperienceSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Parallax effect on scroll
-      gsap.to(sectionRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 3,
+      if (sectionRef.current) {
+        gsap.to(sectionRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 3,
+          },
+          y: -20,
           ease: 'power1.inOut',
-        },
-        y: -20,
-      });
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();

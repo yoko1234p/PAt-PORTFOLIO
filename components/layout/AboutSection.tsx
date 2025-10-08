@@ -26,16 +26,19 @@ export const AboutSection: React.FC<{ lang?: 'zh-hk' | 'en' }> = ({ lang = 'zh-h
       });
 
       // Parallax effect on scroll
-      gsap.to(sectionRef.current?.parentElement, {
-        scrollTrigger: {
-          trigger: sectionRef.current?.parentElement,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 3,
+      const parentElement = sectionRef.current?.parentElement;
+      if (parentElement) {
+        gsap.to(parentElement, {
+          scrollTrigger: {
+            trigger: parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 3,
+          },
+          y: -20,
           ease: 'power1.inOut',
-        },
-        y: -20,
-      });
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
